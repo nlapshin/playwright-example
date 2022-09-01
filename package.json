@@ -1,0 +1,26 @@
+{
+  "name": "playwright-example",
+  "description": "Playwrigth example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha ./src/*.e2e.spec.js --timeout 30000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nlapshin/playwright-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nlapshin/playwright-example/issues"
+  },
+  "homepage": "https://github.com/nlapshin/playwright-example#readme",
+  "dependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "playwright": "^1.25.1"
+  }
+}
