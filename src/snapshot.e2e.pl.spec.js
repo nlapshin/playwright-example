@@ -1,50 +1,22 @@
 const playwright = require('playwright');
-const { expect } = require('chai')
+const { test, expect } = require('@playwright/test');
 
-const helper = require('./auth.helper');
-const { credentials } = helper;
-const { selectors } = helper.page.login;
-
-
-let page, browser, context
-
-describe('Vikunja:login', () => {
-  beforeEach(async function() {
-    browser = await playwright.chromium.launch({
-      headless: false,
-      slowMo: 1000
-    });
-      
-    context = await browser.newContext()
-    page = await context.newPage('https://try.vikunja.io')
-  })
-
-  afterEach(async function() {
-    await page.screenshot({ path: `schreenshots/${this.currentTest.title.replace(/\s+/g, '_')}.png` })
-    await browser.close()
-  })
-
-  it('should exists', async() => {
-    await page.goto('https://try.vikunja.io/login');
+test('should be do successful snapshot testing', async() => {
+  const browser = await playwright.chromium.launch({
+    headless: false,
+    slowMo: 1000
+  });
     
-    const title = await page.title();
-    expect(title).to.equal('Login | Vikunja');
-  })
+  const context = await browser.newContext()
+  const page = await context.newPage('http://localhost:8080')
 
-  it('should successfully login and redirect to main page', async() => {
-    await page.goto('https://try.vikunja.io/login'); // загружаем страницу
+  await page.goto('http://localhost:8080'); // загружаем страницу
+  // maxDiffPixelRatio: 0.01 
+  // { maxDiffPixels: 867 }
+  expect(await page.screenshot()).toMatchSnapshot();
 
-    await page.locator(selectors.login).fill(credentials.login); // вводим юзернейм
-    await page.locator(selectors.password).fill(credentials.password); // вводим пароль
-
-    await page.click(selectors.loginBtn); // нажали на кнопку войти
-    await page.waitForLoadState('networkidle'); // network idle
-    
-    const title = await page.title() // title
-    expect(title).to.equal('Current Tasks | Vikunja')
-  })
-});
-
+  await browser.close()
+})
 
 
 
