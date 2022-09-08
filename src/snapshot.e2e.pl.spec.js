@@ -13,14 +13,18 @@ test('should be do successful snapshot testing', async() => {
   await page.goto('http://localhost:8080'); // загружаем страницу
   // maxDiffPixelRatio: 0.01 
   // { maxDiffPixels: 867 }
-  expect(await page.screenshot()).toMatchSnapshot();
+
+  expect(await page.screenshot()).toMatchSnapshot({
+    maxDiffPixelRatio: 0.02
+  });
+
+  //  // 0 до 1
+
+  // maxDiffPixels: 1098, // абсолютные величины
+  // 1099 pixels (ratio 0.01 of all image pixels) are different
 
   await browser.close()
 })
-
-
-
-
 
 
 
