@@ -26,7 +26,7 @@ class BasePage {
   async init() {
     this.browser = await playwright.chromium.launch({
       headless: false,
-      slowMo: 1000
+      slowMo: 5000
     });
     
     const context = await this.browser.newContext()
@@ -87,11 +87,11 @@ class PlaywrightDevPage extends BasePage {
   }
 }
 
+// jest.toMatchSnapshot()
+
 test('should be do successful snapshot testing', async() => {
   const baseUrl = 'https://playwright.dev'
   const pom = new PlaywrightDevPage(baseUrl)
-
-  console.log(PlaywrightDevPage.createPlaywright())
 
   await pom.init()
   await pom.goto()

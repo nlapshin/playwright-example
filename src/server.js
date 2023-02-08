@@ -3,7 +3,7 @@ const app = express();
 
 app.get('/', (req, res) => {
   res.send(`
-    <div style="font-size: 2px;">
+    <div style="font-size: 52px;">
       Hello world
     <div>
   `)

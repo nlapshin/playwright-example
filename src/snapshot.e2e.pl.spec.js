@@ -11,20 +11,42 @@ test('should be do successful snapshot testing', async() => {
   const page = await context.newPage('http://localhost:8080')
 
   await page.goto('http://localhost:8080'); // загружаем страницу
-  // maxDiffPixelRatio: 0.01 
-  // { maxDiffPixels: 867 }
+
+  // 1767 pixels (ratio 0.01 of all image pixels) are different
 
   expect(await page.screenshot()).toMatchSnapshot({
-    maxDiffPixelRatio: 0.02
+    // maxDiffPixelRatio: 0.02
   });
+
+  await browser.close()
+})
+
+// 0 до 50-70.
+
+// arrange - это подготовка
+// act - это действие.
+// assert - это проверка результата.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // maxDiffPixelRatio: 0.01 
+  // { maxDiffPixels: 867 }
 
   //  // 0 до 1
 
   // maxDiffPixels: 1098, // абсолютные величины
   // 1099 pixels (ratio 0.01 of all image pixels) are different
-
-  await browser.close()
-})
 
 
 
