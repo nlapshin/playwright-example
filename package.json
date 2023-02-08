@@ -3,7 +3,9 @@
   "description": "Playwrigth example",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "@playwright/test": "^1.30.0"
+  },
   "scripts": {
     "test": "mocha ./src/*.e2e.spec.js --timeout 30000"
   },
