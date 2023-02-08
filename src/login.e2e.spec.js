@@ -5,17 +5,18 @@ const expect = chai.expect
 let page, browser, context
 
 const selectors = {
-  login: 'input[name=username]',
+  login: 'input[name=email]',
   password: 'input[name=password]',
-  loginBtn: 'button[type=button].is-primary',
+  loginBtn: 'input[type=submit]',
+  loginSuccess: '.container h1'
 }
 
 const credentials = {
-  login: 'demo',
-  password: 'demo'
+  login: 'simpleForm@authenticationtest.com',
+  password: 'pa$$w0rd'
 }
 
-describe('Vikunja:login', () => {
+describe('authenticationtest:login', () => {
   beforeEach(async function() {
     browser = await playwright.chromium.launch({
       headless: false,
@@ -23,7 +24,7 @@ describe('Vikunja:login', () => {
     });
       
     context = await browser.newContext()
-    page = await context.newPage('https://try.vikunja.io')
+    page = await context.newPage('https://authenticationtest.com/simpleFormAuth/')
   })
 
   afterEach(async function() {
@@ -32,14 +33,14 @@ describe('Vikunja:login', () => {
   })
 
   it('should exists', async() => {
-    await page.goto('https://try.vikunja.io/login');
+    await page.goto('https://authenticationtest.com/simpleFormAuth');
     
     const title = await page.title()
-    expect(title).to.equal('Login | Vikunja')
+    expect(title).to.equal('Authentication Test')
   })
 
   it('should successfully login and redirect to main page', async() => {
-    await page.goto('https://try.vikunja.io/login');
+    await page.goto('https://authenticationtest.com/simpleFormAuth');
 
     await page.locator(selectors.login).fill(credentials.login);
     await page.locator(selectors.password).fill(credentials.password);
@@ -48,7 +49,8 @@ describe('Vikunja:login', () => {
 
     await page.waitForLoadState('networkidle');
     
-    const title = await page.title()
-    expect(title).to.equal('Current Tasks | Vikunja')
+    const title = await page.locator(selectors.loginSuccess).textContent();
+
+    expect(title).to.equal('Login Success')
   })
 })
