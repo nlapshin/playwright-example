@@ -4,6 +4,8 @@ const expect = chai.expect
 
 let page, browser, context
 
+const loginUrl = 'https://authenticationtest.com/simpleFormAuth';
+
 const selectors = {
   login: 'input[name=email]',
   password: 'input[name=password]',
@@ -16,20 +18,42 @@ const credentials = {
   password: 'pa$$w0rd'
 }
 
+async function bootstrapTest() {
+  browser = await playwright.chromium.launch({
+    headless: false,
+    slowMo: 200
+  });
+    
+  context = await browser.newContext()
+  page = await context.newPage()
+}
+
+async function closeTest(testName) {
+  await page.screenshot({ path: `schreenshots/${testName}.png` })
+    await browser.close()
+}
+
+async function login(username, password) {
+  await page.goto(loginUrl);
+
+  await page.locator(selectors.login).type(username);
+  await page.locator(selectors.password).fill(password);
+
+  await page.click(selectors.loginBtn);
+
+  // waitFor
+  await page.waitForLoadState('networkidle');
+  
+  return await page.locator(selectors.loginSuccess).textContent();
+}
+
 describe('authenticationtest:login', () => {
   beforeEach(async function() {
-    browser = await playwright.chromium.launch({
-      headless: false,
-      slowMo: 2000
-    });
-      
-    context = await browser.newContext()
-    page = await context.newPage('https://authenticationtest.com/simpleFormAuth/')
+    await bootstrapTest();
   })
 
   afterEach(async function() {
-    await page.screenshot({ path: `schreenshots/${this.currentTest.title.replace(/\s+/g, '_')}.png` })
-    await browser.close()
+    await closeTest(this.currentTest.title.replace(/\s+/g, '_'));
   })
 
   it('should exists', async() => {
@@ -40,17 +64,26 @@ describe('authenticationtest:login', () => {
   })
 
   it('should successfully login and redirect to main page', async() => {
-    await page.goto('https://authenticationtest.com/simpleFormAuth');
-
-    await page.locator(selectors.login).fill(credentials.login);
-    await page.locator(selectors.password).fill(credentials.password);
-
-    await page.click(selectors.loginBtn);
-
-    await page.waitForLoadState('networkidle');
-    
-    const title = await page.locator(selectors.loginSuccess).textContent();
+    const title = await login(credentials.login, credentials.password)
 
     expect(title).to.equal('Login Success')
+  })
+
+  it('should failure during authorization', async() => {
+    const title = await login(credentials.login, credentials.password + '123456')
+
+    expect(title).to.equal('Login Failure')
+  })
+
+  it('should failure during authorization', async() => {
+    const title = await login(credentials.login + '12345', credentials.password + '123456')
+
+    expect(title).to.equal('Login Failure')
+  })
+
+  it('should failure during authorization', async() => {
+    const title = await login('', '')
+
+    expect(title).to.equal('Login Failure')
   })
 })
