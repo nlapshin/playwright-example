@@ -18,21 +18,27 @@ const credentials = {
   password: 'pa$$w0rd'
 }
 
+// Те действия которые будем выполнять постоянно.
+// Запустить браузер - создать контехт - создать страницу.
 async function bootstrapTest() {
   browser = await playwright.chromium.launch({
     headless: false,
-    slowMo: 200
+    // slowMo: 2000 // Что это за опция?
   });
     
   context = await browser.newContext()
   page = await context.newPage()
 }
 
+// Закрытие.
+// Создать скриншот и закрыть браузер
 async function closeTest(testName) {
-  await page.screenshot({ path: `schreenshots/${testName}.png` })
-    await browser.close()
+  await page.screenshot({ path: `schreenshots/${timestamp}-${testName}.png` })
+  await browser.close()
 }
 
+// Сам логин
+//
 async function login(username, password) {
   await page.goto(loginUrl);
 
@@ -42,9 +48,15 @@ async function login(username, password) {
   await page.click(selectors.loginBtn);
 
   // waitFor
+  // waitFor (Something)
+  // Дожидаемся закгузки + выбрать отсечку
   await page.waitForLoadState('networkidle');
+
+  // Получаем сообщение из элемента
+  const msg = await page.locator(selectors.loginSuccess).textContent();
+  // Лучше получить token, положить его и сходить куда-нибудь.
   
-  return await page.locator(selectors.loginSuccess).textContent();
+  return msg;
 }
 
 describe('authenticationtest:login', () => {
@@ -61,6 +73,7 @@ describe('authenticationtest:login', () => {
     
     const title = await page.title()
     expect(title).to.equal('Authentication Test')
+    expect(page).toHaveScreenshot()
   })
 
   it('should successfully login and redirect to main page', async() => {

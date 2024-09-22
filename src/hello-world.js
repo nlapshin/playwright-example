@@ -5,7 +5,7 @@ const playwright = require('playwright');
 (async () => {
     // Мы запускаем браузер.
     const browser = await playwright.chromium.launch({
-      headless: false
+      headless: false // По умолчанию true
     });
 
     // Мы создали контекст.
@@ -13,18 +13,16 @@ const playwright = require('playwright');
     // Создаем новую страницу.
     const page = await context.newPage();
 
+    console.log('page run');
+
     // Переход на нужный url
     await page.goto('https://otus.ru/', {
       timeout: 60000
-    })
+    });
 
-    const title = (await page.locator('.title-new__text h1').textContent()).trim();
+    const title = (await page.locator('h2.sc-1r3ji37-2').textContent()).trim();
 
-    if (title === 'Авторские онлайн‑курсы для профессионалов') {
-      console.log('Все хорошо');
-    } else {
-      throw new Error('Ошибка');
-    }
+    console.log('title', title);
 
     // Мы делаем скриншот
     await page.screenshot({ path: `screenshots/example-chromium.png`, fullPage: true });
@@ -38,6 +36,5 @@ const playwright = require('playwright');
     //   headless: false,
     //   slowMo: 500,
     // }
-    
   // }
 })();
