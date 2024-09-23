@@ -77,26 +77,42 @@
 //   })
 
 //   it('should successfully login and redirect to main page', async() => {
-//     const title = await login(credentials.login, credentials.password)
+//     await page.goto('https://authenticationtest.com/simpleFormAuth');
 
-//     expect(title).to.equal('Login Success')
+//     await page.locator('input[name=email]').fill(username);
+//     await page.locator('input[name=password]').fill(password);
+
+//     await page.click('input[type=submit]');
+//     await page.waitForLoadState('networkidle');
+//     const title = await page.locator('.container h1').textContent();
+
+//     expect(title).to.equal('Login Success');
 //   })
 
 //   it('should failure during authorization', async() => {
-//     const title = await login(credentials.login, credentials.password + '123456')
+//     await page.goto('https://authenticationtest.com/simpleFormAuth');
 
-//     expect(title).to.equal('Login Failure')
+//     // мы вводим юзернейм в элемент input[name=email]
+//     // await page.locator('input[name=email]').fill(username);
+//     await pageLogin.fillUsername(username)
+//     await page.locator('input[name=password]').fill(credentials.password + '123456');
+
+//     await page.click('input[type=submit]');
+//     await page.waitForLoadState('networkidle');
+//     const title = await page.locator('.container h1').textContent();
+
+//     expect(title).to.equal('Login Failure');
 //   })
 
-//   it('should failure during authorization', async() => {
-//     const title = await login(credentials.login + '12345', credentials.password + '123456')
+  // it('should failure during authorization', async() => {
+  //   const title = await login(credentials.login + '12345', credentials.password + '123456')
 
-//     expect(title).to.equal('Login Failure')
-//   })
+  //   expect(title).to.equal('Login Failure')
+  // })
 
-//   it('should failure during authorization', async() => {
-//     const title = await login('', '')
+  // it('should failure during authorization', async() => {
+  //   const title = await login('', '')
 
-//     expect(title).to.equal('Login Failure')
-//   })
+  //   expect(title).to.equal('Login Failure')
+  // })
 // })

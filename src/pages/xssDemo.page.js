@@ -13,7 +13,6 @@ export function makeXssDemoPage(page) {
   const submitButton = page.locator(selectors.submit);
   const outputDir = page.locator(selectors.outputDir);
 
-
   return {
     async navigate() {
       await page.goto(url);
@@ -28,15 +27,24 @@ export function makeXssDemoPage(page) {
     },
 
     async verifyOutputContains(expectedText) {
-      // console.log(await outputDir.innerText());
-
       await expect(outputDir).toContainText(expectedText);
     },
 
+    // Проверять бизнес логику.
     async enterAndSubmitInput(inputText, expectedText) {
       await this.enterSearchInput(inputText);
       await this.submitInput();
       await this.verifyOutputContains(expectedText);
     }
+  }
+}
+
+
+const obj = {
+  name: 'nik',
+
+  showName() {
+    console.log(obj.name);
+    console.log(this.name); // this === obj
   }
 }
