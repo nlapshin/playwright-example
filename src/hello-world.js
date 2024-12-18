@@ -1,4 +1,4 @@
-const playwright = require('playwright');
+import playwright from 'playwright';
 
 (async () => {
   for (const browserType of ['chromium', 'firefox', 'webkit']) {

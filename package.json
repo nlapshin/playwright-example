@@ -3,9 +3,12 @@
   "description": "Playwrigth example",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "test": "mocha ./src/*.e2e.spec.js --timeout 30000"
+    "test:e2e": "npx playwright test --ui",
+    "test:e2e:ci": "npx playwright test",
+    "test:e2e:trace": "npx playwright test --trace on",
+    "test:e2e:slow": "npx PLAYWRIGHT_SLOW_MO=1000 playwright test --headed",
+    "test:e2e:show": "npx playwright show-report"
   },
   "repository": {
     "type": "git",
@@ -19,8 +22,7 @@
   },
   "homepage": "https://github.com/nlapshin/playwright-example#readme",
   "dependencies": {
-    "chai": "^4.3.6",
-    "mocha": "^10.0.0",
-    "playwright": "^1.25.1"
+    "@playwright/test": "^1.49.1",
+    "playwright": "^1.49.1"
   }
 }
